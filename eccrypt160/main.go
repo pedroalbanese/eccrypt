@@ -59,8 +59,8 @@ func CipherMarshal(data []byte) ([]byte, error) {
 	data = data[1:]
 	x := new(big.Int).SetBytes(data[:20])
 	y := new(big.Int).SetBytes(data[20:40])
-	hash := data[40:64]
-	cipherText := data[64:]
+	hash := data[40:72]
+	cipherText := data[72:]
 	return asn1.Marshal(eccrypterCipher{x, y, hash, cipherText})
 }
 
@@ -147,7 +147,7 @@ func Encrypt(pub *PublicKey, data []byte, random io.Reader,mode int) ([]byte, er
 		}
 		c = append(c, ct...)
 		for i := 0; i < length; i++ {
-			c[64+i] ^= data[i]
+			c[72+i] ^= data[i]
 		}
 		switch mode{
 	
@@ -155,11 +155,11 @@ func Encrypt(pub *PublicKey, data []byte, random io.Reader,mode int) ([]byte, er
 			return append([]byte{0x04}, c...), nil
 		case 1:
 			c1 := make([]byte, 40)
-			c2 := make([]byte, len(c) - 64)
+			c2 := make([]byte, len(c) - 72)
 			c3 := make([]byte, 20)
 			copy(c1, c[:40])
-			copy(c3, c[40:64])
-			copy(c2, c[64:])
+			copy(c3, c[40:72])
+			copy(c2, c[72:])
 			ciphertext := []byte{}
 			ciphertext = append(ciphertext, c1...)
 			ciphertext = append(ciphertext, c2...)
@@ -178,7 +178,7 @@ func Decrypt(priv *PrivateKey, data []byte,mode int) ([]byte, error) {
 	case 1:
 		data = data[1:]
 		c1 := make([]byte, 40)
-		c2 := make([]byte, len(data) - 64)
+		c2 := make([]byte, len(data) - 72)
 		c3 := make([]byte, 20)
 		copy(c1, data[:40])//x1,y1
 		copy(c2, data[40:len(data) - 20])
@@ -191,7 +191,7 @@ func Decrypt(priv *PrivateKey, data []byte,mode int) ([]byte, error) {
 	default:
 		data = data[1:]
 	}
-	length := len(data) - 64
+	length := len(data) - 72
 	curve := priv.Curve
 	x := new(big.Int).SetBytes(data[:20])
 	y := new(big.Int).SetBytes(data[20:40])
@@ -209,7 +209,7 @@ func Decrypt(priv *PrivateKey, data []byte,mode int) ([]byte, error) {
 		return nil, errors.New("Decrypt: failed to decrypt")
 	}
 	for i := 0; i < length; i++ {
-		c[i] ^= data[i+64]
+		c[i] ^= data[i+72]
 	}
 	tm := []byte{}
 	tm = append(tm, x2Buf...)
@@ -224,7 +224,7 @@ func Decrypt(priv *PrivateKey, data []byte,mode int) ([]byte, error) {
 	}
 
 	h := Sum256(tm)
-	if bytes.Compare(h, data[40:64]) != 0 {
+	if bytes.Compare(h, data[40:72]) != 0 {
 		return c, errors.New("Decrypt: failed to decrypt")
 	}
 	return c, nil
