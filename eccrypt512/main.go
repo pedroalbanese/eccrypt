@@ -1,4 +1,4 @@
-// ECC 256-bit Asymmetric Encryption Scheme
+// ECC 512-bit Asymmetric Encryption Scheme
 package eccrypt512
 
 import (
