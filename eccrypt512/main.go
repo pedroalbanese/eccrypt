@@ -6,6 +6,7 @@ import (
 	"crypto"
 	"crypto/elliptic"
 	"crypto/sha512"
+	"crypto/rand"
 	"encoding/asn1"
 	"encoding/binary"
 	"errors"
@@ -230,6 +231,7 @@ func Decrypt(priv *PrivateKey, data []byte, mode int) ([]byte, error) {
 
 func randFieldElement(c elliptic.Curve, random io.Reader) (k *big.Int, err error) {
 	if random == nil {
+		random = rand.Reader //If there is no external trusted random source,please use rand.Reader to instead of it.
 	}
 	params := c.Params()
 	b := make([]byte, params.BitSize/8+8)
