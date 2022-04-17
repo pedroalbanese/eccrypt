@@ -24,7 +24,7 @@ type PrivateKey struct {
 	D *big.Int
 }
 
-type eccryptCipher struct {
+type eccrypterCipher struct {
 	XCoordinate *big.Int
 	YCoordinate *big.Int
 	HASH        []byte
@@ -61,11 +61,11 @@ func CipherMarshal(data []byte) ([]byte, error) {
 	y := new(big.Int).SetBytes(data[64:128])
 	hash := data[128:192]
 	cipherText := data[192:]
-	return asn1.Marshal(eccryptCipher{x, y, hash, cipherText})
+	return asn1.Marshal(eccrypterCipher{x, y, hash, cipherText})
 }
 
 func CipherUnmarshal(data []byte) ([]byte, error) {
-	var cipher eccryptCipher
+	var cipher eccrypterCipher
 	_, err := asn1.Unmarshal(data, &cipher)
 	if err != nil {
 		return nil, err
