@@ -24,7 +24,7 @@ type PrivateKey struct {
 	D *big.Int
 }
 
-type frp256v1Cipher struct {
+type eccrypterCipher struct {
 	XCoordinate *big.Int
 	YCoordinate *big.Int
 	HASH        []byte
@@ -61,11 +61,11 @@ func CipherMarshal(data []byte) ([]byte, error) {
 	y := new(big.Int).SetBytes(data[32:64])
 	hash := data[64:96]
 	cipherText := data[96:]
-	return asn1.Marshal(frp256v1Cipher{x, y, hash, cipherText})
+	return asn1.Marshal(eccrypterCipher{x, y, hash, cipherText})
 }
 
 func CipherUnmarshal(data []byte) ([]byte, error) {
-	var cipher frp256v1Cipher
+	var cipher eccrypterCipher
 	_, err := asn1.Unmarshal(data, &cipher)
 	if err != nil {
 		return nil, err
