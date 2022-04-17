@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"crypto"
 	"crypto/elliptic"
-	"crypto/rand"
 	"crypto/sha512"
 	"encoding/asn1"
 	"encoding/binary"
