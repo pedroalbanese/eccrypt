@@ -19,10 +19,10 @@ import (
 )
 
 var (
-	dec    = flag.Bool("dec", false, "Decrypt with Private key.")
-	enc    = flag.Bool("enc", false, "Encrypt with Public key.")
-	key    = flag.String("key", "", "Private/Public key.")
-	gen     = flag.Bool("gen", false, "Generate keypair.")
+	dec = flag.Bool("dec", false, "Decrypt with Private key.")
+	enc = flag.Bool("enc", false, "Encrypt with Public key.")
+	key = flag.String("key", "", "Private/Public key.")
+	gen = flag.Bool("gen", false, "Generate keypair.")
 )
 
 func main() {
