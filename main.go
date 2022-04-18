@@ -40,7 +40,7 @@ func (priv *PrivateKey) DecryptAsn1(data []byte) ([]byte, error) {
 }
 
 func EncryptAsn1(pub *PublicKey, data []byte, rand io.Reader) ([]byte, error) {
-	cipher, err := Encrypt(pub, data, rand,0)
+	cipher, err := Encrypt(pub, data, rand, 0)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func DecryptAsn1(pub *PrivateKey, data []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return Decrypt(pub, cipher,0)
+	return Decrypt(pub, cipher, 0)
 }
 
 func CipherMarshal(data []byte) ([]byte, error) {
@@ -87,10 +87,10 @@ func CipherUnmarshal(data []byte) ([]byte, error) {
 		y = append(zeroByteSlice()[:32-n], y...)
 	}
 	c := []byte{}
-	c = append(c, x...)          
-	c = append(c, y...)          
-	c = append(c, hash...)       
-	c = append(c, cipherText...) 
+	c = append(c, x...)
+	c = append(c, y...)
+	c = append(c, hash...)
+	c = append(c, cipherText...)
 	return append([]byte{0x04}, c...), nil
 }
 
@@ -98,7 +98,7 @@ var errZeroParam = errors.New("zero parameter")
 var one = new(big.Int).SetInt64(1)
 var two = new(big.Int).SetInt64(2)
 
-func Encrypt(pub *PublicKey, data []byte, random io.Reader,mode int) ([]byte, error) {
+func Encrypt(pub *PublicKey, data []byte, random io.Reader, mode int) ([]byte, error) {
 	length := len(data)
 	for {
 		c := []byte{}
@@ -149,13 +149,13 @@ func Encrypt(pub *PublicKey, data []byte, random io.Reader,mode int) ([]byte, er
 		for i := 0; i < length; i++ {
 			c[96+i] ^= data[i]
 		}
-		switch mode{
-	
+		switch mode {
+
 		case 0:
 			return append([]byte{0x04}, c...), nil
 		case 1:
 			c1 := make([]byte, 64)
-			c2 := make([]byte, len(c) - 96)
+			c2 := make([]byte, len(c)-96)
 			c3 := make([]byte, 32)
 			copy(c1, c[:64])
 			copy(c3, c[64:96])
@@ -165,24 +165,24 @@ func Encrypt(pub *PublicKey, data []byte, random io.Reader,mode int) ([]byte, er
 			ciphertext = append(ciphertext, c2...)
 			ciphertext = append(ciphertext, c3...)
 			return append([]byte{0x04}, ciphertext...), nil
-    	default:
+		default:
 			return append([]byte{0x04}, c...), nil
+		}
 	}
 }
-}
 
-func Decrypt(priv *PrivateKey, data []byte,mode int) ([]byte, error) {
+func Decrypt(priv *PrivateKey, data []byte, mode int) ([]byte, error) {
 	switch mode {
 	case 0:
 		data = data[1:]
 	case 1:
 		data = data[1:]
 		c1 := make([]byte, 64)
-		c2 := make([]byte, len(data) - 96)
+		c2 := make([]byte, len(data)-96)
 		c3 := make([]byte, 32)
-		copy(c1, data[:64])//x1,y1
-		copy(c2, data[64:len(data) - 32])
-		copy(c3, data[len(data) - 32:])
+		copy(c1, data[:64]) //x1,y1
+		copy(c2, data[64:len(data)-32])
+		copy(c3, data[len(data)-32:])
 		c := []byte{}
 		c = append(c, c1...)
 		c = append(c, c3...)
