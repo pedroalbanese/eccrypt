@@ -29,8 +29,6 @@ func main() {
 	flag.Parse()
 
 	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "FRP256v1 Digital Signer/ECDH - ALBANESE Research Lab")
-		fmt.Fprintln(os.Stderr, "ANSSI FRP256v1 256-bit prime field Weierstrass curve\n")
 		fmt.Fprintln(os.Stderr, "Usage of", os.Args[0]+":")
 		flag.PrintDefaults()
 		os.Exit(2)
