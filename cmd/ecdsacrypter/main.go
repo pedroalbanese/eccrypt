@@ -22,7 +22,7 @@ var (
 	dec    = flag.Bool("dec", false, "Decrypt with Private key.")
 	enc    = flag.Bool("enc", false, "Encrypt with Public key.")
 	key    = flag.String("key", "", "Private/Public key.")
-	keygen = flag.Bool("keygen", false, "Generate keypair.")
+	gen     = flag.Bool("gen", false, "Generate keypair.")
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 
 	pubkeyCurve = elliptic.P256()
 
-	if *keygen {
+	if *gen {
 		privatekey = new(ecdsa.PrivateKey)
 		privatekey, err = ecdsa.GenerateKey(pubkeyCurve, rand.Reader)
 		if err != nil {
