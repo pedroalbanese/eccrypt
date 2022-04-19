@@ -48,11 +48,6 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		if len(WritePrivateKeyToHex(privatekey)) != 64 {
-			log.Fatal("Private key too short!")
-			os.Exit(1)
-		}
-
 		pubkey = privatekey.PublicKey
 		fmt.Println("Private= " + WritePrivateKeyToHex(privatekey))
 		fmt.Println("Public= " + WritePublicKeyToHex(&pubkey))
