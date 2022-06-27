@@ -6,7 +6,7 @@
 
 ### Elliptic curve-based Asymmetric Encryption Scheme
 
-## CMD Examples:
+#### CMD Examples:
 ```sh
 ./ecdsacrypter -gen
 ./ecdsacrypter -enc -key $pubkey < plaintext.ext > ciphertext.ext 
