@@ -13,20 +13,6 @@
 ./ecdsacrypter -dec -key $prvkey < ciphertext.ext 
 ```
 
-
-#### Type Convertion:
-```go
-func ConvertPrivateKey(key *ecdsa.PrivateKey) (*eccrypt.PrivateKey, error) {
-	var privKey *eccrypt.PrivateKey
-	return privKey, nil
-}
-
-func ConvertPublicKey(key *ecdsa.PublicKey) (*eccrypt.PublicKey, error) {
-	var pubKey *eccrypt.PublicKey
-	return pubKey, nil
-}
-```
-
 ## License
 
 This project is licensed under the ISC License.
